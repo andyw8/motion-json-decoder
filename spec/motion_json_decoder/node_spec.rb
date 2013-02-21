@@ -12,6 +12,17 @@ describe "JSONDecoder::Node" do
     node.first_name.should == 'Andy'
   end
 
+  it "complains is a field isn't found" do
+    class Foo
+      include JSONDecoder::Node
+      field :first_name
+    end
+
+    json_hash = {'firstname' => 'Andy'}
+    node = Foo.new json_hash
+    expect { node.first_name }.to raise_error(KeyError)
+  end
+
   it "allows fields to be aliased" do
     class Foo
       include JSONDecoder::Node
