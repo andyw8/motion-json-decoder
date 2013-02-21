@@ -29,7 +29,7 @@ Let's say you have a RubyMotion app which parses this response from the server:
         ]
     }
 
-So that's a *people* collection which contains two *person* nodes.
+i.e. a *people* collection which contains two *person* nodes.
 
 There may be a number of place in your app where you want to display a person's full name:
 
@@ -39,10 +39,9 @@ There may be a number of place in your app where you want to display a person's 
       names << full_name
     end
 
-But doing this in multiply places isn't DRY. You could write a helper method, but it's hard to think where
-that should live.
+But doing this in multiply places isn't very DRY. You could write a helper method, but where should that code live?
 
-*motion-json-decoder* allows the creating of a mapping between your JSON nodes and simple objects. Just include the module in your class:
+*motion-json-decoder* allows the creating of mappings between the nodes in a JSON response, and simple objects. Just include the module in your class and use the simple DSL to declare your fields:
 
     class Person
       include JSONDecoder::Node
@@ -55,7 +54,7 @@ that should live.
       end
     end
 
-You can then treat person as a proper object:
+You can then treat person as a simple object:
 
     names = []
     json['people'].each do |person_node|
@@ -63,10 +62,10 @@ You can then treat person as a proper object:
       names << person.full_name
     end
 
-Typo Catching
--------------
+Extra Protection
+----------------
 
-Under the hood, motion-json-decoder uses Hash#fetch rather than Hash#[], so if you call a field which doesn't exist, you'll get an exception right away, rather than a potentially difficult-to-debug nil return value.
+Under the hood, motion-json-decoder uses `Hash#fetch` rather than `Hash#[]`, so if you call a field which doesn't exist, you'll get an exception right away, rather than a potentially difficult-to-debug nil return value.
 
 Checking for Presence
 ---------------------
@@ -80,7 +79,7 @@ You can check if the node contains a particular key:
       field :middle_name
     end
 
-    person = Person.new('first_name' => 'Andy', 'last_name' => nil)
+    person = Person.new({'first_name' => 'Andy', 'last_name' => nil})
     person.first_name? #-> true
     person.last_name? #-> true (even though it's nil)
     person.middle_name? #-> false
@@ -96,4 +95,4 @@ class_name parameter should be another class which includes the `JSONDecoder::No
 
 When you call json.people, rather than array of hashes, you'll get an array of Organisation objects.
 
-The use of the lambda (->) is to avoid dependency resolution problems at compile time.
+The use of the lambda (`->`) is to avoid dependency resolution problems at compile time.
