@@ -1,7 +1,7 @@
 motion-json-decoder
 ===================
 
-Turn JSON nodes into proper Ruby objects.
+Treat a JSON response as a graph of proper Ruby objects, rather than raw hashes and arrays.
 
 Installation
 ------------
@@ -41,7 +41,7 @@ There may be a number of place in your app where you want to display a person's 
 
 But doing this in multiply places isn't very DRY. You could write a helper method, but where should that code live?
 
-*motion-json-decoder* allows the creating of mappings between the nodes in a JSON response, and simple objects. Just include the module in your class and use the simple DSL to declare your fields:
+*motion-json-decoder* allows the creation of mappings between the nodes in a JSON response, and simple objects. Just include the module in your class and use the simple DSL to declare your fields:
 
     class Person
       include JSONDecoder::Node
