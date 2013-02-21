@@ -1,7 +1,7 @@
 motion-json-decoder
 ===================
 
-Treat a JSON response as a graph of proper Ruby objects, rather than raw hashes and arrays.
+Treat a parsed JSON response as a graph of proper Ruby objects, rather than raw hashes and arrays.
 
 Installation
 ------------
