@@ -17,8 +17,8 @@ module JSONDecoder
         method_name = opts[:as] || field_name
         define_method method_name do
           result = json[field_name.to_s]
-          if type == :timestamp
-            result.to_date # TODO move this into lib if gemifying
+          if type == :date
+            JSONDecoder::DateParser.new.parse(result) # TODO move this into lib if gemifying
           elsif klass
             klass.new result
           else
