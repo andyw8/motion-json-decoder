@@ -1,7 +1,7 @@
 motion-json-decoder
 ===================
 
-Treat a parsed JSON response as a graph of proper Ruby objects, rather than raw hashes and arrays.
+Treat a parsed JSON response as a graph of proper Ruby objects, rather than plain hashes and arrays.
 
 Installation
 ------------
@@ -54,11 +54,12 @@ But doing this in multiply places isn't very DRY. You could write a helper metho
       end
     end
 
-You can then treat person as a simple object:
+You can then treat person as a simple object, by passing a hash when instantiating a new node object:
 
     names = []
-    json['people'].each do |person_node|
-      person = Person.new person_node
+    json['people'].each do |person_hash|
+      person = Person.new(person_hash)
+      NSLog "Adding #{person.first_name}..."
       names << person.full_name
     end
 
