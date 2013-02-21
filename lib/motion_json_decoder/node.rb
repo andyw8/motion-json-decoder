@@ -9,6 +9,15 @@ module JSONDecoder
       base.send :extend, ClassMethods
     end
 
+    def method_missing(meth, *args, &block)
+      if meth.to_s =~ /^(.+)?$/
+        field_name = meth.to_s.gsub('?', '')
+        json.has_key? field_name
+      else
+        super
+      end
+    end
+
     module ClassMethods
       def field(field_name, opts = {})
         type = opts[:type]
@@ -16,7 +25,7 @@ module JSONDecoder
         raise "Cannot use :type and :using together" if type && klass
         method_name = opts[:as] || field_name
         define_method method_name do
-          result = json[field_name.to_s]
+          result = json.fetch field_name.to_s
           if type == :date
             JSONDecoder::DateParser.new.parse(result) # TODO move this into lib if gemifying
           elsif klass

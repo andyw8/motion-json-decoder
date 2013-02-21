@@ -68,6 +68,23 @@ Typo Catching
 
 Under the hood, motion-json-decoder uses Hash#fetch rather than Hash#[], so if you call a field which doesn't exist, you'll get an exception right away, rather than a potentially difficult-to-debug nil return value.
 
+Checking for Presence
+---------------------
+You can check if the node contains a particular key:
+
+    class Person
+      include JSONDecoder::Node
+
+      field :first_name
+      field :last_name
+      field :middle_name
+    end
+
+    person = Person.new('first_name' => 'Andy', 'last_name' => nil)
+    person.first_name? #-> true
+    person.last_name? #-> true (even though it's nil)
+    person.middle_name? #-> false
+
 Collections
 ------------
 

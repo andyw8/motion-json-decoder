@@ -1,4 +1,4 @@
-require 'motion_json_decoder'
+require 'motion-json-decoder'
 
 describe "JSONDecoder::Node" do
   it "exposes fields" do
@@ -43,5 +43,32 @@ describe "JSONDecoder::Node" do
     }
     node = Foo.new json_hash
     node.organisations.map(&:name).should == ['Reddit', 'Hacker News']
+  end
+
+  describe "presence check" do
+    before do
+      class Person
+        include JSONDecoder::Node
+        field :first_name
+        field :middle_name
+      end
+      @person = Foo.new({'first_name' => 'Andy', 'last_name' => nil})
+    end
+
+    it "returns true if a given field is present in the response" do
+      @person.first_name?.should be_true
+    end
+
+    it "returns true if a given field is present in the response, even if nil" do
+      @person.last_name?.should be_true
+    end
+
+    it "returns false if a given field isn't present in the response" do
+      @person.middle_name?.should be_false
+    end
+
+    xit "complains if trying to check the existing of an undefined field" do
+      expect { @person.title?.should }.to raise_exception(RuntimeError)
+    end
   end
 end
